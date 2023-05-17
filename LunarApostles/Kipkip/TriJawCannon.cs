@@ -22,13 +22,13 @@ namespace LunarApostles
         for (int index = 0; index < FireEnergyCannon.projectileCount; ++index)
         {
           Ray aimRay = self.GetAimRay();
-          aimRay.direction = TweakedApplySpread(aimRay.direction, 30f, num2 * num3, FireEnergyCannon.projectilePitchBonus);
+          aimRay.direction = TweakedApplySpread(aimRay.direction, 45f, num2 * num3, FireEnergyCannon.projectilePitchBonus);
           ProjectileManager.instance.FireProjectile(FireEnergyCannon.projectilePrefab, aimRay.origin, Util.QuaternionSafeLookRotation(aimRay.direction), self.gameObject, self.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(self.critStat, self.characterBody.master));
         }
         for (int index = 0; index < FireEnergyCannon.projectileCount; ++index)
         {
           Ray aimRay = self.GetAimRay();
-          aimRay.direction = TweakedApplySpread(aimRay.direction, 60f, num2 * num3, FireEnergyCannon.projectilePitchBonus);
+          aimRay.direction = TweakedApplySpread(aimRay.direction, 90f, num2 * num3, FireEnergyCannon.projectilePitchBonus);
           ProjectileManager.instance.FireProjectile(FireEnergyCannon.projectilePrefab, aimRay.origin, Util.QuaternionSafeLookRotation(aimRay.direction), self.gameObject, self.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(self.critStat, self.characterBody.master));
         }
       }
