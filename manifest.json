@@ -1,0 +1,11 @@
+﻿{
+	"name": "LunarApostles",
+	"version_number": "1.0.0",
+	"website_url": "",
+	"description": "Optional pillars that make you fight better lunar scavs",
+	"dependencies": [
+	"RiskofThunder-R2API_RecalculateStats-1.2.0",
+	"RiskofThunder-R2API_ContentManagement-1.0.1",
+	"RiskofThunder-R2API_Language-1.0.0"
+	]
+}
