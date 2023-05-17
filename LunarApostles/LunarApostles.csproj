@@ -24,9 +24,7 @@
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
     <PackageReference Include="R2API.Core" Version="5.0.6" />
-    <PackageReference Include="R2API.RecalculateStats" Version="1.2.0" />
     <PackageReference Include="R2API.ContentManagement" Version="1.0.1" />
-    <PackageReference Include="R2API.Language" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

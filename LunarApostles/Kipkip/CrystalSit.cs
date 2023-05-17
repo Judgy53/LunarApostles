@@ -55,8 +55,15 @@ namespace LunarApostles
     private void SpawnCrystals(CharacterBody body)
     {
       body.AddBuff(RoR2Content.Buffs.Immune);
-      LunarApostles.timeCrystals = new();
-      for (int i = 0; i < 3; i++)
+      bool firstThreshold = body.healthComponent.health <= (body.healthComponent.fullHealth * 0.75); // 75% HP
+      bool secondThreshold = body.healthComponent.health <= (body.healthComponent.fullHealth * 0.5); // 50% HP
+      int crystalCount = 3;
+      if (firstThreshold)
+        crystalCount = 4 - LunarApostles.timeCrystals.Count;
+      if (secondThreshold)
+        crystalCount = 5 - LunarApostles.timeCrystals.Count;
+
+      for (int i = 0; i < crystalCount; i++)
       {
         NodeGraph groundNodes = SceneInfo.instance.groundNodes;
         if (!(bool)(Object)groundNodes)

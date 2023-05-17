@@ -51,14 +51,22 @@ namespace LunarApostles
           ray2.direction = vector3_2;
         }
 
-        float num = 360f / (float)(ThrowSack.projectileCount * 2);
+        int projectileCount = ThrowSack.projectileCount;
+        bool firstThreshold = self.healthComponent.health <= (self.healthComponent.fullHealth * 0.75); // 75% HP
+        bool secondThreshold = self.healthComponent.health <= (self.healthComponent.fullHealth * 0.5); // 50% HP
+        if (firstThreshold)
+          projectileCount = ThrowSack.projectileCount * 2;
+        if (secondThreshold)
+          projectileCount = ThrowSack.projectileCount * 3;
+
+        float num = 360f / (float)(projectileCount);
         Vector3 vector3 = Vector3.ProjectOnPlane(self.inputBank.aimDirection, Vector3.up);
-        for (int index = 0; index < ThrowSack.projectileCount * 2; ++index)
+        for (int index = 0; index < projectileCount; ++index)
         {
           Vector3 forward = Quaternion.AngleAxis(num * (float)index, Vector3.up) * vector3;
-          ProjectileManager.instance.FireProjectile(ThrowSack.projectilePrefab, aimRay.origin, Util.QuaternionSafeLookRotation(forward), self.gameObject, self.damageStat * ThrowSack.damageCoefficient, 0.0f, Util.CheckRoll(self.critStat, self.characterBody.master), speedOverride: speedOverride);
+          ProjectileManager.instance.FireProjectile(ThrowSack.projectilePrefab, ray2.origin, Util.QuaternionSafeLookRotation(forward), self.gameObject, self.damageStat * ThrowSack.damageCoefficient, 0.0f, Util.CheckRoll(self.critStat, self.characterBody.master), speedOverride: speedOverride);
         }
-        for (int index = 0; index < ThrowSack.projectileCount; ++index)
+        for (int index = 0; index < projectileCount / 2; ++index)
         {
           Quaternion rotation = Util.QuaternionSafeLookRotation(Util.ApplySpread(ray2.direction, ThrowSack.minSpread, ThrowSack.maxSpread, 1f, 1f));
           ProjectileManager.instance.FireProjectile(ThrowSack.projectilePrefab, ray2.origin, rotation, self.gameObject, self.damageStat * ThrowSack.damageCoefficient, 0.0f, Util.CheckRoll(self.critStat, self.characterBody.master), speedOverride: speedOverride);

@@ -6,6 +6,7 @@ TODOS:
 - Attach set_scene event to pillars
 - Return players back to the pillar after completing the boss
 - Change lunar scav bag to regular
+- Finish Kipkip
 - Finish Wipwip
 - Finish Twiptwip
 - Finish Guragura
@@ -21,8 +22,11 @@ TODOS:
 ## Kipkip (ScavLunar1Body)
 
 - Primary Tri-Jaw Cannon - fires 3 projectile clusters in a \|/ formation
+  - Reduce spread and increase speed on thresholds
 - Secondary Circular Toss - Throws thqwibs in a circle around the scav on top of the regular toss
+  - Increases projectiles on thresholds
 - Utility Crystal Sit - Creates 3 time crystals and is immune until theyre destroyed
+  - Increase crystal count on thresholds
 
 ## Wipwip (ScavLunar2Body)
 
