@@ -19,14 +19,11 @@ TODOS:
 - AI4 FireCannon primary
 - AI5 FollowNodeGraphToTarget noskillslot
 
-## Kipkip (ScavLunar1Body)
+## Kipkip Displacement Apostle (ScavLunar1Body)
 
-- Primary Tri-Jaw Cannon - fires 3 projectile clusters in a \|/ formation
-  - Reduce spread and increase speed on thresholds
-- Secondary Circular Toss - Throws thqwibs in a circle around the scav on top of the regular toss
-  - Increases projectiles on thresholds
-- Utility Crystal Sit - Creates 3 time crystals and is immune until theyre destroyed
-  - Increase crystal count on thresholds
+- Primary Severed Cannon - Fires from random points around itself
+- Secondary Orb Barrage - Spawns 6 frozen orbs that launch after 4 seconds
+- Utility Quake - Shockwave and Orb burst with a tracking orb
 
 ## Wipwip (ScavLunar2Body)
 

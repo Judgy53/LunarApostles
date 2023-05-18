@@ -4,6 +4,7 @@
 	"website_url": "",
 	"description": "Optional pillars that make you fight enhanced lunar scavs",
 	"dependencies": [
-		"RiskofThunder-R2API_ContentManagement-1.0.1"
+		"RiskofThunder-R2API_ContentManagement-1.0.1",
+		"RiskofThunder-R2API_Prefab-1.0.1"
 	]
 }

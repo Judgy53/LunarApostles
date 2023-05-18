@@ -1,7 +1,9 @@
 using RoR2;
-using RoR2.Navigation;
+using RoR2.Projectile;
 using System.Collections.Generic;
 using EntityStates;
+using EntityStates.BrotherMonster;
+using EntityStates.LunarWisp;
 using EntityStates.ScavMonster;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -16,14 +18,13 @@ namespace LunarApostles
     {
       On.EntityStates.ScavMonster.FindItem.OnEnter += FindItem_OnEnter;
       On.EntityStates.ScavMonster.FindItem.OnExit += FindItem_OnExit;
-      On.RoR2.CharacterBody.OnDeathStart += CharacterBody_OnDeathStart;
     }
 
     private void FindItem_OnEnter(On.EntityStates.ScavMonster.FindItem.orig_OnEnter orig, EntityStates.ScavMonster.FindItem self)
     {
       if (self.characterBody.name == "ScavLunar1Body(Clone)")
       {
-        SpawnCrystals(self.characterBody);
+        FireWave(self.characterBody, self.GetAimRay(), self.damageStat);
         self.outer.SetState((EntityState)new ExitSit());
       }
       else
@@ -36,45 +37,42 @@ namespace LunarApostles
         orig(self);
     }
 
-    private void CharacterBody_OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)
+    private void FireWave(CharacterBody body, Ray aimRay, float damageStat)
     {
-      orig(self);
-      if (self && self.name == "TimeCrystalBody(Clone)" && SceneManager.GetActiveScene().name == "limbo")
+      float num = 360f / (float)12;
+      Vector3 vector3 = Vector3.ProjectOnPlane(body.inputBank.aimDirection, Vector3.up);
+      Vector3 footPosition = body.footPosition;
+      for (int index = 0; index < 12; ++index)
       {
-        int count = LunarApostles.timeCrystals.Count;
-        if (count != 1)
-          LunarApostles.timeCrystals.RemoveAt(0);
-        else
+        Vector3 forward = Quaternion.AngleAxis(num * (float)index, Vector3.up) * vector3;
+        ProjectileManager.instance.FireProjectile(ExitSkyLeap.waveProjectilePrefab, footPosition, Util.QuaternionSafeLookRotation(forward), body.gameObject, body.damage * ExitSkyLeap.waveProjectileDamageCoefficient, ExitSkyLeap.waveProjectileForce, Util.CheckRoll(body.crit, body.master));
+      }
+
+      float num2 = 360f / 8;
+      for (int index = 0; index < 8; ++index)
+      {
+        Vector3 forward = Quaternion.AngleAxis(num2 * (float)index, Vector3.up) * vector3;
+        ProjectileManager.instance.FireProjectile(FistSlam.waveProjectilePrefab, footPosition, Util.QuaternionSafeLookRotation(forward), body.gameObject, body.damage * FistSlam.waveProjectileDamageCoefficient, FistSlam.waveProjectileForce, Util.CheckRoll(body.crit, body.master));
+      }
+
+      Ray projectileRay = new Ray();
+      projectileRay.direction = aimRay.direction;
+      float maxDistance = 1000f;
+      float randY = UnityEngine.Random.Range(10f, 25f);
+      Vector3 randVector = new Vector3(projectileRay.direction.x, randY, projectileRay.direction.z);
+      Vector3 position = footPosition + randVector;
+      projectileRay.origin = position;
+      RaycastHit hitInfo;
+      {
+        if (Physics.Raycast(aimRay, out hitInfo, maxDistance, (int)LayerIndex.world.mask))
         {
-          LunarApostles.timeCrystals.RemoveAt(0);
-          GameObject.Find("ScavLunar1Body(Clone)").GetComponent<CharacterBody>().RemoveBuff(RoR2Content.Buffs.Immune);
+          projectileRay.direction = hitInfo.point - projectileRay.origin;
+          EffectManager.SpawnEffect(LunarApostles.severPrefab, new EffectData { origin = projectileRay.origin, rotation = Util.QuaternionSafeLookRotation(projectileRay.direction) }, false);
+          ProjectileManager.instance.FireProjectile(LunarApostles.wispBomb, projectileRay.origin, Util.QuaternionSafeLookRotation(projectileRay.direction), body.gameObject, damageStat * SeekingBomb.bombDamageCoefficient, SeekingBomb.bombForce, Util.CheckRoll(body.crit, body.master), speedOverride: 15);
         }
       }
     }
-
-    private void SpawnCrystals(CharacterBody body)
-    {
-      body.AddBuff(RoR2Content.Buffs.Immune);
-      bool firstThreshold = body.healthComponent.health <= (body.healthComponent.fullHealth * 0.75); // 75% HP
-      bool secondThreshold = body.healthComponent.health <= (body.healthComponent.fullHealth * 0.5); // 50% HP
-      int crystalCount = 3;
-      if (firstThreshold)
-        crystalCount = 4 - LunarApostles.timeCrystals.Count;
-      if (secondThreshold)
-        crystalCount = 5 - LunarApostles.timeCrystals.Count;
-
-      for (int i = 0; i < crystalCount; i++)
-      {
-        NodeGraph groundNodes = SceneInfo.instance.groundNodes;
-        if (!(bool)(Object)groundNodes)
-          return;
-        List<NodeGraph.NodeIndex> withFlagConditions = groundNodes.GetActiveNodesForHullMaskWithFlagConditions(HullMask.Golem, NodeFlags.None, NodeFlags.NoCharacterSpawn);
-        NodeGraph.NodeIndex nodeIndex = withFlagConditions[Random.Range(0, withFlagConditions.Count)];
-        Vector3 position;
-        groundNodes.GetNodePosition(nodeIndex, out position);
-        LunarApostles.timeCrystals.Add(GameObject.Instantiate(timeCrystal, position, Quaternion.identity));
-      }
-
-    }
   }
 }
+// RoR2/Base/Brother/BrotherSunderWave.prefab
+//RoR2/Base/Brother/BrotherRing.prefab
