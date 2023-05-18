@@ -65,12 +65,12 @@ namespace LunarApostles
 
       Ray aimRay = this.GetAimRay();
       aimRay.direction = TweakedApplySpread(aimRay.direction, 0);
-      ProjectileManager.instance.FireProjectile(LunarApostles.trijawProjectile, aimRay.origin, Util.QuaternionSafeLookRotation(aimRay.direction), this.gameObject, this.damageStat * (FireEnergyCannon.damageCoefficient * FireEnergyCannon.projectileCount), FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: speedOverride);
+      ProjectileManager.instance.FireProjectile(FireEnergyCannon.projectilePrefab, aimRay.origin, Util.QuaternionSafeLookRotation(aimRay.direction), this.gameObject, this.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: speedOverride);
 
       for (int index = 0; index < 2; ++index)
       {
         aimRay.direction = TweakedApplySpread(aimRay.direction, angle);
-        ProjectileManager.instance.FireProjectile(LunarApostles.trijawProjectile, aimRay.origin, Util.QuaternionSafeLookRotation(aimRay.direction), this.gameObject, this.damageStat * (FireEnergyCannon.damageCoefficient * FireEnergyCannon.projectileCount), FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: speedOverride);
+        ProjectileManager.instance.FireProjectile(FireEnergyCannon.projectilePrefab, aimRay.origin, Util.QuaternionSafeLookRotation(aimRay.direction), this.gameObject, this.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: speedOverride);
       }
 
     }
