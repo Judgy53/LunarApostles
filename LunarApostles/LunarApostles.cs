@@ -30,6 +30,11 @@ namespace LunarApostles
 
     public void Awake()
     {
+      // Setup
+      SetupSkillStates();
+      // Hooks
+      On.RoR2.SceneDirector.Start += SceneDirector_Start;
+
       GivePickupsOnStart[] pickups = kipkipMaster.GetComponents<GivePickupsOnStart>();
       foreach (GivePickupsOnStart pickup in pickups)
         GameObject.Destroy(pickup);
@@ -57,9 +62,6 @@ namespace LunarApostles
 
       // Wipwip Changes
       wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepTriJawCannon));
-
-      // Hooks
-      On.RoR2.SceneDirector.Start += SceneDirector_Start;
     }
 
     private void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
