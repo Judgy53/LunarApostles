@@ -34,20 +34,8 @@ namespace LunarApostles
     public override void OnEnter()
     {
       base.OnEnter();
-      speedOverride = 55;
-      refireDurationBase = 1f;
-      firstThreshold = this.healthComponent.health <= (this.healthComponent.fullHealth * 0.75); // 75% HP
-      secondThreshold = this.healthComponent.health <= (this.healthComponent.fullHealth * 0.5); // 50% HP
-      if (firstThreshold)
-      {
-        speedOverride = 65;
-        refireDurationBase = 0.75f;
-      }
-      if (secondThreshold)
-      {
-        speedOverride = 65;
-        refireDurationBase = 0.75f;
-      }
+      speedOverride = 65;
+      refireDurationBase = 0.5f;
       this.duration = FireEnergyCannon.baseDuration / this.attackSpeedStat;
       this.refireDuration = refireDurationBase / this.attackSpeedStat;
       int num1 = (int)Util.PlayAttackSpeedSound(FireEnergyCannon.sound, this.gameObject, this.attackSpeedStat);
@@ -57,42 +45,23 @@ namespace LunarApostles
         EffectManager.SimpleMuzzleFlash(FireEnergyCannon.effectPrefab, this.gameObject, EnergyCannonState.muzzleName, false);
       if (!this.isAuthority)
         return;
-
-      Ray aimRay = this.GetAimRay();
-      FireStarFormation(aimRay);
+      FireStarFormation();
     }
 
-    private void FireStarFormation(Ray aimRay)
+    private void FireStarFormation()
     {
-      float num3 = UnityEngine.Random.Range(0.0f, 360f);
-      for (int index3 = 0; index3 < 6; ++index3)
+      Ray aimRay = this.GetAimRay();
+      float num = 120f / 12;
+      for (int index = 0; index < 12; ++index)
       {
-        for (int index4 = 0; index4 < 4; ++index4)
-        {
-          Vector3 vector3 = Quaternion.Euler(0.0f, num3 + 45f * (float)index3, 0.0f) * Vector3.forward;
-          Vector3 position = aimRay.origin + vector3 * (FireGoldFist.distanceBetweenFists / 2) * (float)index4;
-          Vector3 space = position + Vector3.forward;
-          ProjectileManager.instance.FireProjectile(FireEnergyCannon.projectilePrefab, space, Util.QuaternionSafeLookRotation(aimRay.direction), this.gameObject, this.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: speedOverride);
-        }
+        Vector3 angle;
+        if (num * index > 60)
+          angle = Quaternion.AngleAxis((-num * (index - 6)), Vector3.up) * aimRay.direction;
+        else
+          angle = Quaternion.AngleAxis(num * (float)index, Vector3.up) * aimRay.direction;
+        ProjectileManager.instance.FireProjectile(FireEnergyCannon.projectilePrefab, aimRay.origin, Util.QuaternionSafeLookRotation(angle), this.gameObject, this.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: speedOverride);
       }
     }
-
-    /* fires flat for some reason
-        private void FireStarFormation(Ray aimRay)
-        {
-          float num3 = UnityEngine.Random.Range(0.0f, 360f);
-          for (int index3 = 0; index3 < 8; ++index3)
-          {
-            for (int index4 = 0; index4 < 6; ++index4)
-            {
-              Vector3 vector3 = Quaternion.Euler(0.0f, num3 + 45f * (float)index3, 0.0f) * Vector3.forward;
-              Vector3 position = aimRay.origin + vector3 * (FireGoldFist.distanceBetweenFists / 2) * (float)index4;
-              Vector3 space = position + Vector3.up * 30;
-              ProjectileManager.instance.FireProjectile(FireEnergyCannon.projectilePrefab, space, Util.QuaternionSafeLookRotation(aimRay.direction), this.gameObject, this.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: speedOverride);
-            }
-          }
-        }
-    */
 
     public override void FixedUpdate()
     {

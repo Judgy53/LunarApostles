@@ -1,8 +1,9 @@
 using RoR2;
 using RoR2.Projectile;
 using EntityStates;
+using EntityStates.ScavMonster;
 using EntityStates.BrotherMonster;
-using EntityStates.LunarWisp;
+using EntityStates.VagrantMonster.Weapon;
 using UnityEngine;
 
 namespace LunarApostles
@@ -35,26 +36,15 @@ namespace LunarApostles
         ProjectileManager.instance.FireProjectile(FistSlam.waveProjectilePrefab, footPosition, Util.QuaternionSafeLookRotation(forward), body.gameObject, body.damage * FistSlam.waveProjectileDamageCoefficient, FistSlam.waveProjectileForce, Util.CheckRoll(body.crit, body.master));
       }
 
-      for (int i = 0; i < 32; i++)
+      for (int i = 0; i < 12; i++)
       {
-        Ray projectileRay = new Ray();
-        projectileRay.direction = aimRay.direction;
-        float maxDistance = 160f;
-        float randX = UnityEngine.Random.Range(-80f, 80f);
-        float randY = UnityEngine.Random.Range(-1f, 1f);
-        float randZ = UnityEngine.Random.Range(-80f, 80f);
-        Vector3 randVector = new Vector3(randX, randY, randZ);
-        Vector3 position = this.characterBody.corePosition + randVector;
-        projectileRay.origin = position;
-        RaycastHit hitInfo;
-        {
-          if (Physics.Raycast(aimRay, out hitInfo, maxDistance, (int)LayerIndex.world.mask))
-          {
-            projectileRay.direction = hitInfo.point - projectileRay.origin;
-            EffectManager.SpawnEffect(LunarApostles.severPrefab, new EffectData { origin = projectileRay.origin, rotation = Util.QuaternionSafeLookRotation(projectileRay.direction) }, false);
-            ProjectileManager.instance.FireProjectile(LunarApostles.wispBomb, projectileRay.origin, Util.QuaternionSafeLookRotation(projectileRay.direction), this.gameObject, this.damageStat * SeekingBomb.bombDamageCoefficient, SeekingBomb.bombForce, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: 0);
-          }
-        }
+        float angle = i * Mathf.PI * 2 / 12;
+        float x = Mathf.Cos(angle) * 5;
+        float z = Mathf.Sin(angle) * 5;
+        Vector3 pos = transform.position + new Vector3(x, 0, z);
+        float angleDegrees = -angle * Mathf.Rad2Deg;
+        Quaternion rot = Quaternion.Euler(0, angleDegrees, 0);
+        ProjectileManager.instance.FireProjectile(JellyBarrage.projectilePrefab, pos, rot, this.gameObject, this.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: 55);
       }
     }
   }

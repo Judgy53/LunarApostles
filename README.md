@@ -27,7 +27,7 @@ also the names dont even matter since itll change based on the pillar
 ## Twiptwip (Blood Pillar) (ScavLunar3Body)
 
 - Primary Star Cannon - fires several projectiles in a * formation
-- Secondary Surround - surrounds the player with a cylinder of destructable orbs
+- Secondary Starfall - drops an orb * formation on the player
 - Utility Drain - Shockwave and Orb burst and creates random HP draining areas (resets every ability use)
 
 ## Guragura (Soul Pillar) (ScavLunar4Body)

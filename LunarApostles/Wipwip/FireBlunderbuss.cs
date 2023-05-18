@@ -33,20 +33,8 @@ namespace LunarApostles
     public override void OnEnter()
     {
       base.OnEnter();
-      speedOverride = 65;
-      refireDurationBase = 0.75f;
-      firstThreshold = this.healthComponent.health <= (this.healthComponent.fullHealth * 0.75); // 75% HP
-      secondThreshold = this.healthComponent.health <= (this.healthComponent.fullHealth * 0.5); // 50% HP
-      if (firstThreshold)
-      {
-        speedOverride = 75;
-        refireDurationBase = 0.5f;
-      }
-      if (secondThreshold)
-      {
-        speedOverride = 85;
-        refireDurationBase = 0.5f;
-      }
+      speedOverride = 75;
+      refireDurationBase = 0.5f;
       this.duration = FireEnergyCannon.baseDuration / this.attackSpeedStat;
       this.refireDuration = refireDurationBase / this.attackSpeedStat;
       int num1 = (int)Util.PlayAttackSpeedSound(FireEnergyCannon.sound, this.gameObject, this.attackSpeedStat);
