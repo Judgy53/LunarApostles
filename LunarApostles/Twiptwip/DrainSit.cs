@@ -7,14 +7,14 @@ using UnityEngine;
 
 namespace LunarApostles
 {
-  public class MineSit : BaseMineSitState
+  public class DrainSit : BaseDrainSitState
   {
 
     public override void OnEnter()
     {
       base.OnEnter();
       FireWave(this.characterBody, this.GetAimRay(), this.damageStat);
-      this.outer.SetNextState((EntityState)new ExitMineSit());
+      this.outer.SetNextState((EntityState)new ExitDrainSit());
     }
 
     private void FireWave(CharacterBody body, Ray aimRay, float damageStat)
