@@ -1,41 +1,27 @@
 using RoR2;
 using RoR2.Projectile;
-using System.Collections.Generic;
 using EntityStates;
 using EntityStates.BrotherMonster;
 using EntityStates.LunarWisp;
-using EntityStates.ScavMonster;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
 
 namespace LunarApostles
 {
-  public class CrystalSit
+  public class ShockwaveSit : BaseShockwaveSitState
   {
-    private static GameObject timeCrystal = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/WeeklyRun/TimeCrystalBody.prefab").WaitForCompletion();
-    public CrystalSit()
+
+    public override void OnEnter()
     {
-      On.EntityStates.ScavMonster.FindItem.OnEnter += FindItem_OnEnter;
-      On.EntityStates.ScavMonster.FindItem.OnExit += FindItem_OnExit;
+      base.OnEnter();
+      FireWave(this.characterBody, this.GetAimRay(), this.damageStat);
     }
 
-    private void FindItem_OnEnter(On.EntityStates.ScavMonster.FindItem.orig_OnEnter orig, EntityStates.ScavMonster.FindItem self)
+    public override void OnExit()
     {
-      if (self.characterBody.name == "ScavLunar1Body(Clone)")
-      {
-        FireWave(self.characterBody, self.GetAimRay(), self.damageStat);
-        self.outer.SetState((EntityState)new ExitSit());
-      }
-      else
-        orig(self);
+      base.OnExit();
+      this.outer.SetNextState((EntityState)new ExitShockwaveSit());
     }
 
-    private void FindItem_OnExit(On.EntityStates.ScavMonster.FindItem.orig_OnExit orig, EntityStates.ScavMonster.FindItem self)
-    {
-      if (!self.characterBody.name.Contains("ScavLunar"))
-        orig(self);
-    }
 
     private void FireWave(CharacterBody body, Ray aimRay, float damageStat)
     {
@@ -74,5 +60,3 @@ namespace LunarApostles
     }
   }
 }
-// RoR2/Base/Brother/BrotherSunderWave.prefab
-//RoR2/Base/Brother/BrotherRing.prefab
