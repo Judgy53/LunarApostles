@@ -56,11 +56,11 @@ namespace LunarApostles
     private void FireStarFormation(Ray aimRay, Vector3 pos)
     {
       float num3 = UnityEngine.Random.Range(0.0f, 360f);
-      for (int index3 = 0; index3 < 6; ++index3)
+      for (int index3 = 0; index3 < 7; ++index3)
       {
         for (int index4 = 0; index4 < 6; ++index4)
         {
-          Vector3 vector3 = Quaternion.Euler(0.0f, num3 + 60f * (float)index3, 0.0f) * Vector3.forward;
+          Vector3 vector3 = Quaternion.Euler(0.0f, num3 + 45f * (float)index3, 0.0f) * Vector3.forward;
           Vector3 position = pos + vector3 * FireGoldFist.distanceBetweenFists * (float)index4;
           ProjectileManager.instance.FireProjectile(JellyBarrage.projectilePrefab, position, Util.QuaternionSafeLookRotation(Vector3.down), this.gameObject, this.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: 60);
         }

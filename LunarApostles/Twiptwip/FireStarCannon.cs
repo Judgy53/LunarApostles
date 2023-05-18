@@ -51,11 +51,11 @@ namespace LunarApostles
     private void FireStarFormation()
     {
       Ray aimRay = this.GetAimRay();
-      float num = 120f / 12;
+      float num = 60f / 12;
       for (int index = 0; index < 12; ++index)
       {
         Vector3 angle;
-        if (num * index > 60)
+        if (num * index > 30)
           angle = Quaternion.AngleAxis((-num * (index - 6)), Vector3.up) * aimRay.direction;
         else
           angle = Quaternion.AngleAxis(num * (float)index, Vector3.up) * aimRay.direction;

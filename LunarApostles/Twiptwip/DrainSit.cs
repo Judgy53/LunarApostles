@@ -44,7 +44,7 @@ namespace LunarApostles
         Vector3 pos = transform.position + new Vector3(x, 0, z);
         float angleDegrees = -angle * Mathf.Rad2Deg;
         Quaternion rot = Quaternion.Euler(0, angleDegrees, 0);
-        ProjectileManager.instance.FireProjectile(JellyBarrage.projectilePrefab, pos, rot, this.gameObject, this.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: 55);
+        ProjectileManager.instance.FireProjectile(JellyBarrage.projectilePrefab, pos, rot, this.gameObject, this.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: 45);
       }
     }
   }

@@ -1,16 +1,12 @@
 # Lunar Apostles
 
-Makes pillars optional and each pillar takes you to fight a different apostle that rewards you with an item/pearl. Adds new abilities to each of the 4 unique twisted scavengers.
+Makes pillars optional and each pillar takes you to fight a different apostle (lunar scav) that rewards you with an item/pearl. Adds new abilities to each of the 4 twisted scavengers to make each unique. The names don't matter since abilities are changed after activating the pillar. Could use more tweaks/polish.
 
 TODOS:
 - Attach set_scene event to pillars
 - Return players back to the pillar after completing the boss
-- Change lunar scav bag to regular
-- Finish Twiptwip
+- Add a reward for defeating the boss
 - Finish Guragura
-
-looks like theyre linked so changing 1's abilities changes em all even if i clone, will change as you "enter" the pillars
-also the names dont even matter since itll change based on the pillar
 
 ## Kipkip (Mass Pillar) 
 
@@ -18,17 +14,17 @@ also the names dont even matter since itll change based on the pillar
 - Secondary Orb Barrage - Spawns 6 frozen orbs that launch after 4 seconds
 - Utility Quake - Shockwave and Orb burst with a slow tracking orb
 
-## Wipwip (Design Pillar) (ScavLunar2Body)
+## Wipwip (Design Pillar)
 
-- Primary Blunderbuss - fires an inaccurate cluster of projectiles
+- Primary Blunderbuss - fires an inaccurate cluster of projectiles (higher than normal)
 - Secondary Artillery Barrage - summons a round of meteorite artillery 
 - Utility Scatter - Shockwave and Orb burst with mines ("mines" expire)
 
-## Twiptwip (Blood Pillar) (ScavLunar3Body)
+## Twiptwip (Blood Pillar)
 
-- Primary Star Cannon - fires several projectiles in a * formation
-- Secondary Starfall - drops an orb * formation on the player
-- Utility Drain - Shockwave and Orb burst and creates random HP draining areas (resets every ability use)
+- Primary Cleave Cannon - fires several projectiles in a ) formation
+- Secondary Starfall - drops an orb star formation on the player
+- Utility Drain - Shockwave and Orb burst with slower orbs
 
 ## Guragura (Soul Pillar) (ScavLunar4Body)
 
