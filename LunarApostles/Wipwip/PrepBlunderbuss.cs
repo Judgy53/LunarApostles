@@ -5,7 +5,7 @@ using EntityStates.ScavMonster;
 
 namespace LunarApostles
 {
-  public class PrepTriJawCannon : TriJawCannonState
+  public class PrepBlunderbuss : BlunderbussState
   {
     public static float baseDuration;
     public static string sound;
@@ -35,7 +35,7 @@ namespace LunarApostles
       this.StartAimMode(0.5f);
       if ((double)this.fixedAge < (double)this.duration || !this.isAuthority)
         return;
-      this.outer.SetNextState((EntityState)new FireTriJawCannon());
+      this.outer.SetNextState((EntityState)new FireBlunderbuss());
     }
 
     public override void OnExit()

@@ -67,7 +67,7 @@ namespace LunarApostles
       // wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterShockwaveSit));
 
       // Wipwip Changes
-      wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepTriJawCannon));
+      wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepBlunderbuss));
       wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(ArtilleryBarrage));
       wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterMineSit));
     }
@@ -95,9 +95,9 @@ namespace LunarApostles
       ContentAddition.AddEntityState<EnterMineSit>(out _);
       ContentAddition.AddEntityState<ExitMineSit>(out _);
       ContentAddition.AddEntityState<MineSit>(out _);
-      ContentAddition.AddEntityState<TriJawCannonState>(out _);
-      ContentAddition.AddEntityState<PrepTriJawCannon>(out _);
-      ContentAddition.AddEntityState<FireTriJawCannon>(out _);
+      ContentAddition.AddEntityState<BlunderbussState>(out _);
+      ContentAddition.AddEntityState<PrepBlunderbuss>(out _);
+      ContentAddition.AddEntityState<FireBlunderbuss>(out _);
       ContentAddition.AddEntityState<ArtilleryBarrage>(out _);
     }
 

@@ -4,7 +4,7 @@ using EntityStates.ScavMonster;
 
 namespace LunarApostles
 {
-  public class TriJawCannonState : BaseState
+  public class BlunderbussState : BaseState
   {
     public static string muzzleName;
     protected Transform muzzleTransform;

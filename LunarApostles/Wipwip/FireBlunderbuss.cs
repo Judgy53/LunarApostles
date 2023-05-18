@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace LunarApostles
 {
-  public class FireTriJawCannon : TriJawCannonState
+  public class FireBlunderbuss : BlunderbussState
   {
     public static float baseDuration;
     public static float baseRefireDuration;
@@ -71,7 +71,7 @@ namespace LunarApostles
     {
       base.FixedUpdate();
       if ((double)this.fixedAge >= (double)this.refireDuration && this.currentRefire + 1 < FireEnergyCannon.maxRefireCount && this.isAuthority)
-        this.outer.SetNextState((EntityState)new FireTriJawCannon()
+        this.outer.SetNextState((EntityState)new FireBlunderbuss()
         {
           currentRefire = (this.currentRefire + 1)
         });

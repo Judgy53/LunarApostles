@@ -20,9 +20,9 @@ looks like theyre linked so changing 1's abilities changes em all even if i clon
 
 ## Wipwip (Design Pillar) (ScavLunar2Body)
 
-- Primary Blast Cannon - fires 3 large scrap shells in a W formation
+- Primary Blunderbuss - fires an inaccurate cluster of projectiles
 - Secondary Artillery Barrage - summons a round of meteorite artillery 
-- Utility Orb Spiral - fires a burst of slow and fast moving orbs in a spiral
+- Utility Surround - Shockwave and Orb burst with mines
 
 ## Twiptwip Volatile Apostle (Blood Pillar) (ScavLunar3Body)
 
