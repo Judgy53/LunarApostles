@@ -33,7 +33,7 @@ namespace LunarApostles
 
     private void FindItem_OnExit(On.EntityStates.ScavMonster.FindItem.orig_OnExit orig, EntityStates.ScavMonster.FindItem self)
     {
-      if (self.characterBody.name != "ScavLunar1Body(Clone)")
+      if (!self.characterBody.name.Contains("ScavLunar"))
         orig(self);
     }
 
