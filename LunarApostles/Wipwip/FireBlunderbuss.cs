@@ -34,18 +34,18 @@ namespace LunarApostles
     {
       base.OnEnter();
       speedOverride = 65;
-      refireDurationBase = 0.5f;
+      refireDurationBase = 0.75f;
       firstThreshold = this.healthComponent.health <= (this.healthComponent.fullHealth * 0.75); // 75% HP
       secondThreshold = this.healthComponent.health <= (this.healthComponent.fullHealth * 0.5); // 50% HP
       if (firstThreshold)
       {
         speedOverride = 75;
-        refireDurationBase = 0.25f;
+        refireDurationBase = 0.5f;
       }
       if (secondThreshold)
       {
         speedOverride = 85;
-        refireDurationBase = 0.15f;
+        refireDurationBase = 0.5f;
       }
       this.duration = FireEnergyCannon.baseDuration / this.attackSpeedStat;
       this.refireDuration = refireDurationBase / this.attackSpeedStat;

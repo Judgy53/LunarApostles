@@ -49,11 +49,7 @@ namespace LunarApostles
       foreach (GivePickupsOnStart pickup in pickups)
         GameObject.Destroy(pickup);
 
-      // kms
-      CharacterBody body1 = wipwipBody.GetComponent<CharacterBody>();
-      body1.baseMaxHealth = 3800;
-      body1.levelMaxHealth = 1140;
-
+      //  Master Changes
       kipkipMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Secondary).First<AISkillDriver>().maxUserHealthFraction = 0.95f;
       kipkipMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Utility).First<AISkillDriver>().maxUserHealthFraction = 0.90f;
       wipwipMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Secondary).First<AISkillDriver>().maxUserHealthFraction = 0.95f;
@@ -66,6 +62,10 @@ namespace LunarApostles
       // wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(OrbBarrage));
       // wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterShockwaveSit));
 
+      // kms
+      CharacterBody body1 = wipwipBody.GetComponent<CharacterBody>();
+      body1.baseMaxHealth = 3800;
+      body1.levelMaxHealth = 1140;
       // Wipwip Changes
       wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepBlunderbuss));
       wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(ArtilleryBarrage));

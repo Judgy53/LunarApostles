@@ -6,11 +6,11 @@ TODOS:
 - Attach set_scene event to pillars
 - Return players back to the pillar after completing the boss
 - Change lunar scav bag to regular
-- Finish Wipwip
 - Finish Twiptwip
 - Finish Guragura
 
 looks like theyre linked so changing 1's abilities changes em all even if i clone, will change as you "enter" the pillars
+also the names dont even matter since itll change based on the pillar
 
 ## Kipkip (Mass Pillar) 
 
@@ -22,17 +22,19 @@ looks like theyre linked so changing 1's abilities changes em all even if i clon
 
 - Primary Blunderbuss - fires an inaccurate cluster of projectiles
 - Secondary Artillery Barrage - summons a round of meteorite artillery 
-- Utility Surround - Shockwave and Orb burst with mines
+- Utility Scatter - Shockwave and Orb burst with mines ("mines" expire)
 
-## Twiptwip Volatile Apostle (Blood Pillar) (ScavLunar3Body)
+## Twiptwip (Blood Pillar) (ScavLunar3Body)
 
-- Primary Volatile Cannon - fires alternating formations each shot (circular O, X, spiral)
-- Secondary Square Toss - throws thqwib in a filled square formation [::] 
-- Utility Draining Sit - fires a circle of HP draining projectiles
+- Primary Star Cannon - fires several projectiles in a * formation
+- Secondary Surround - surrounds the player with a cylinder of destructable orbs
+- Utility Drain - Shockwave and Orb burst and creates random HP draining areas (resets every ability use)
 
 ## Guragura (Soul Pillar) (ScavLunar4Body)
 
-
+- Primary 
+- Secondary 
+- Utility Enclose - Shockwave and Orb burst while enclosing players to closer quarters (resets every ability use)
 
 ## Changelog
 
