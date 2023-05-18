@@ -7,14 +7,14 @@ using UnityEngine;
 
 namespace LunarApostles
 {
-  public class ShockwaveSit : BaseShockwaveSitState
+  public class MineSit : BaseMineSitState
   {
 
     public override void OnEnter()
     {
       base.OnEnter();
       FireWave(this.characterBody, this.GetAimRay(), this.damageStat);
-      this.outer.SetNextState((EntityState)new ExitShockwaveSit());
+      this.outer.SetNextState((EntityState)new ExitMineSit());
     }
 
     private void FireWave(CharacterBody body, Ray aimRay, float damageStat)
@@ -35,20 +35,25 @@ namespace LunarApostles
         ProjectileManager.instance.FireProjectile(FistSlam.waveProjectilePrefab, footPosition, Util.QuaternionSafeLookRotation(forward), body.gameObject, body.damage * FistSlam.waveProjectileDamageCoefficient, FistSlam.waveProjectileForce, Util.CheckRoll(body.crit, body.master));
       }
 
-      Ray projectileRay = new Ray();
-      projectileRay.direction = aimRay.direction;
-      float maxDistance = 1000f;
-      float randY = UnityEngine.Random.Range(10f, 25f);
-      Vector3 randVector = new Vector3(projectileRay.direction.x, randY, projectileRay.direction.z);
-      Vector3 position = footPosition + randVector;
-      projectileRay.origin = position;
-      RaycastHit hitInfo;
+      for (int i = 0; i < 24; i++)
       {
-        if (Physics.Raycast(aimRay, out hitInfo, maxDistance, (int)LayerIndex.world.mask))
+        Ray projectileRay = new Ray();
+        projectileRay.direction = aimRay.direction;
+        float maxDistance = 160f;
+        float randX = UnityEngine.Random.Range(-80f, 80f);
+        float randY = UnityEngine.Random.Range(-1f, 1f);
+        float randZ = UnityEngine.Random.Range(-80f, 80f);
+        Vector3 randVector = new Vector3(randX, randY, randZ);
+        Vector3 position = this.characterBody.corePosition + randVector;
+        projectileRay.origin = position;
+        RaycastHit hitInfo;
         {
-          projectileRay.direction = hitInfo.point - projectileRay.origin;
-          EffectManager.SpawnEffect(LunarApostles.severPrefab, new EffectData { origin = projectileRay.origin, rotation = Util.QuaternionSafeLookRotation(projectileRay.direction) }, false);
-          ProjectileManager.instance.FireProjectile(LunarApostles.wispBomb, projectileRay.origin, Util.QuaternionSafeLookRotation(projectileRay.direction), body.gameObject, damageStat * SeekingBomb.bombDamageCoefficient, SeekingBomb.bombForce, Util.CheckRoll(body.crit, body.master), speedOverride: 15);
+          if (Physics.Raycast(aimRay, out hitInfo, maxDistance, (int)LayerIndex.world.mask))
+          {
+            projectileRay.direction = hitInfo.point - projectileRay.origin;
+            EffectManager.SpawnEffect(LunarApostles.severPrefab, new EffectData { origin = projectileRay.origin, rotation = Util.QuaternionSafeLookRotation(projectileRay.direction) }, false);
+            ProjectileManager.instance.FireProjectile(LunarApostles.wispBomb, projectileRay.origin, Util.QuaternionSafeLookRotation(projectileRay.direction), this.gameObject, this.damageStat * SeekingBomb.bombDamageCoefficient, SeekingBomb.bombForce, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: 0);
+          }
         }
       }
     }

@@ -10,16 +10,18 @@ TODOS:
 - Finish Twiptwip
 - Finish Guragura
 
-## Kipkip Displacement Apostle (Mass Pillar) 
+looks like theyre linked so changing 1's abilities changes em all even if i clone, will change as you "enter" the pillars
+
+## Kipkip (Mass Pillar) 
 
 - Primary Severed Cannon - Fires from random points around itself
 - Secondary Orb Barrage - Spawns 6 frozen orbs that launch after 4 seconds
 - Utility Quake - Shockwave and Orb burst with a slow tracking orb
 
-## Wipwip Ordnance Apostle (Design Pillar) (ScavLunar2Body)
+## Wipwip (Design Pillar) (ScavLunar2Body)
 
-- Primary Tri-Jaw Cannon - fires 3 large scrap shells in a W formation
-- Secondary Artillery - summons a round of meteorite artillery 
+- Primary Blast Cannon - fires 3 large scrap shells in a W formation
+- Secondary Artillery Barrage - summons a round of meteorite artillery 
 - Utility Orb Spiral - fires a burst of slow and fast moving orbs in a spiral
 
 ## Twiptwip Volatile Apostle (Blood Pillar) (ScavLunar3Body)

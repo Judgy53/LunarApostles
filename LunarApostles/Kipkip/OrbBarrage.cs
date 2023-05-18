@@ -2,6 +2,7 @@ using RoR2;
 using RoR2.Projectile;
 using EntityStates;
 using EntityStates.ScavMonster;
+using EntityStates.LunarWisp;
 using UnityEngine;
 
 namespace LunarApostles
@@ -55,7 +56,7 @@ namespace LunarApostles
             {
               projectileRay.direction = hitInfo.point - projectileRay.origin;
               EffectManager.SpawnEffect(LunarApostles.severPrefab, new EffectData { origin = projectileRay.origin, rotation = Util.QuaternionSafeLookRotation(projectileRay.direction) }, false);
-              ProjectileManager.instance.FireProjectile(LunarApostles.wispBomb, projectileRay.origin, Util.QuaternionSafeLookRotation(projectileRay.direction), this.gameObject, this.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: 0);
+              ProjectileManager.instance.FireProjectile(LunarApostles.wispBomb, projectileRay.origin, Util.QuaternionSafeLookRotation(projectileRay.direction), this.gameObject, this.damageStat * SeekingBomb.bombDamageCoefficient, SeekingBomb.bombForce, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: 0);
             }
           }
         }

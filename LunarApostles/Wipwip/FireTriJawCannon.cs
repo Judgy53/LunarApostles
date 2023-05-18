@@ -25,7 +25,6 @@ namespace LunarApostles
     public int currentRefire;
     private float duration;
     private float refireDuration;
-    private float angle;
     private float speedOverride;
     private float refireDurationBase;
     private bool firstThreshold;
@@ -34,24 +33,19 @@ namespace LunarApostles
     public override void OnEnter()
     {
       base.OnEnter();
-      angle = 45f;
-      speedOverride = 75;
-      refireDurationBase = 0.75f;
+      speedOverride = 65;
+      refireDurationBase = 0.5f;
       firstThreshold = this.healthComponent.health <= (this.healthComponent.fullHealth * 0.75); // 75% HP
       secondThreshold = this.healthComponent.health <= (this.healthComponent.fullHealth * 0.5); // 50% HP
-      Debug.LogWarning(firstThreshold);
-      Debug.LogWarning(secondThreshold);
       if (firstThreshold)
       {
-        angle = 30f;
-        speedOverride = 85;
-        refireDurationBase = 0.5f;
+        speedOverride = 75;
+        refireDurationBase = 0.25f;
       }
       if (secondThreshold)
       {
-        angle = 30f;
-        speedOverride = 95;
-        refireDurationBase = 0.25f;
+        speedOverride = 85;
+        refireDurationBase = 0.15f;
       }
       this.duration = FireEnergyCannon.baseDuration / this.attackSpeedStat;
       this.refireDuration = refireDurationBase / this.attackSpeedStat;
@@ -62,14 +56,12 @@ namespace LunarApostles
         EffectManager.SimpleMuzzleFlash(FireEnergyCannon.effectPrefab, this.gameObject, EnergyCannonState.muzzleName, false);
       if (!this.isAuthority)
         return;
-
-      Ray aimRay = this.GetAimRay();
-      aimRay.direction = TweakedApplySpread(aimRay.direction, 0);
-      ProjectileManager.instance.FireProjectile(FireEnergyCannon.projectilePrefab, aimRay.origin, Util.QuaternionSafeLookRotation(aimRay.direction), this.gameObject, this.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: speedOverride);
-
-      for (int index = 0; index < 2; ++index)
+      float num2 = this.currentRefire % 2 == 0 ? 1f : -1f;
+      float num3 = Mathf.Ceil((float)this.currentRefire / 2f) * FireEnergyCannon.projectileYawBonusPerRefire;
+      for (int index = 0; index < FireEnergyCannon.projectileCount * 4; ++index)
       {
-        aimRay.direction = TweakedApplySpread(aimRay.direction, angle);
+        Ray aimRay = this.GetAimRay();
+        aimRay.direction = Util.ApplySpread(aimRay.direction, 0, 10, 1f, 1f, num2 * num3, FireEnergyCannon.projectilePitchBonus);
         ProjectileManager.instance.FireProjectile(FireEnergyCannon.projectilePrefab, aimRay.origin, Util.QuaternionSafeLookRotation(aimRay.direction), this.gameObject, this.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: speedOverride);
       }
 
