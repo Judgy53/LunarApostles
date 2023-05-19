@@ -24,12 +24,14 @@ namespace LunarApostles
     public static bool activatedBlood;
     public static bool activatedSoul;
     public static bool completedPillar = false;
+
     public static GameObject timeCrystal = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/WeeklyRun/TimeCrystalBody.prefab").WaitForCompletion();
     public static GameObject severPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/moon/MoonExitArenaOrbEffect.prefab").WaitForCompletion();
     public static GameObject wispBomb = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/LunarWisp/LunarWispTrackingBomb.prefab").WaitForCompletion();
     public static GameObject bloodSiphon = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/moon2/BloodSiphonNearbyAttachment.prefab").WaitForCompletion();
     public static MeteorStormController meteorStormController = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Meteor/MeteorStorm.prefab").WaitForCompletion().GetComponent<MeteorStormController>();
 
+    private static SceneDef limbo = Addressables.LoadAssetAsync<SceneDef>("RoR2/Base/limbo/limbo.asset ").WaitForCompletion();
     private static GameObject kipkipBody = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar1Body.prefab").WaitForCompletion();
     private static GameObject wipwipBody = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar2Body.prefab").WaitForCompletion();
     private static GameObject twiptwipBody = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar3Body.prefab").WaitForCompletion();
@@ -41,6 +43,7 @@ namespace LunarApostles
 
     public void Awake()
     {
+      limbo.suppressNpcEntry = true;
       // Setup
       SetupSkillStates();
       // Hooks
