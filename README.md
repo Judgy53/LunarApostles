@@ -1,12 +1,12 @@
 # Lunar Apostles
 
-Makes pillars optional and each pillar takes you to fight a different apostle (lunar scav) that rewards you with an item/pearl. Adds new abilities to each of the 4 twisted scavengers to make each unique. The names don't matter since abilities are changed after activating the pillar. Could use more tweaks/polish.
+Makes pillars optional and each pillar takes you to fight a different apostle (lunar scav). Adds new abilities to each of the 4 twisted scavengers to make each unique. The names don't matter since abilities are changed after activating the pillar. Could use more tweaks/polish. No idea if it works in multiplayer.
 
 TODOS:
-- Attach set_scene event to pillars
-- Return players back to the pillar after completing the boss
-- Add a reward for defeating the boss
-- Finish Guragura
+- reset scav abilities after each pillar
+- Tweak apostles as needed
+- Add a reward for fighting the miniboss
+- Add curse damage persistence
 
 ## Kipkip (Mass Pillar) 
 
@@ -30,10 +30,10 @@ TODOS:
 
 - Primary Lucky Cannon - Has a 25% to refire
 - Secondary Full House - Summons a double orb (tracking/regular) barrage
-- Utility Jackpot - Shockwave and Orb burst and becomes immune until crystals are broken
+- Utility Jackpot - Shockwave and Orb burst and becomes buffed (+30% movespd +30% atkspd)
 
 ## Changelog
 
-**1.0.0**
+**0.9.0**
 
 - Release

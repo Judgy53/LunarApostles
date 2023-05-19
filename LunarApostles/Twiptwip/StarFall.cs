@@ -56,7 +56,7 @@ namespace LunarApostles
     private void FireStarFormation(Ray aimRay, Vector3 pos)
     {
       float num3 = UnityEngine.Random.Range(0.0f, 360f);
-      for (int index3 = 0; index3 < 7; ++index3)
+      for (int index3 = 0; index3 < 8; ++index3)
       {
         for (int index4 = 0; index4 < 6; ++index4)
         {

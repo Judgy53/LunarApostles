@@ -4,6 +4,7 @@ using RoR2.Networking;
 using RoR2.CharacterAI;
 using R2API;
 using EntityStates;
+using EntityStates.ScavMonster;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -22,6 +23,7 @@ namespace LunarApostles
     public static bool activatedDesign;
     public static bool activatedBlood;
     public static bool activatedSoul;
+    public static bool completedPillar = false;
     public static GameObject timeCrystal = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/WeeklyRun/TimeCrystalBody.prefab").WaitForCompletion();
     public static GameObject severPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/moon/MoonExitArenaOrbEffect.prefab").WaitForCompletion();
     public static GameObject wispBomb = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/LunarWisp/LunarWispTrackingBomb.prefab").WaitForCompletion();
@@ -30,6 +32,8 @@ namespace LunarApostles
 
     private static GameObject kipkipBody = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar1Body.prefab").WaitForCompletion();
     private static GameObject wipwipBody = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar2Body.prefab").WaitForCompletion();
+    private static GameObject twiptwipBody = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar3Body.prefab").WaitForCompletion();
+    private static GameObject guraguraBody = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar4Body.prefab").WaitForCompletion();
     private static GameObject kipkipMaster = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar1Master.prefab").WaitForCompletion();
     private static GameObject wipwipMaster = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar2Master.prefab").WaitForCompletion();
     private static GameObject twiptwipMaster = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar3Master.prefab").WaitForCompletion();
@@ -41,13 +45,10 @@ namespace LunarApostles
       SetupSkillStates();
       // Hooks
       On.RoR2.SceneDirector.Start += SceneDirector_Start;
-      On.RoR2.CharacterBody.OnDeathStart += CharacterBody_OnDeathStart;
+      On.RoR2.CharacterBody.Start += CharacterBody_Start;
       On.RoR2.HoldoutZoneController.Start += HoldoutZoneController_Start;
       On.EntityStates.MoonElevator.MoonElevatorBaseState.OnEnter += MoonElevatorBaseState_OnEnter;
       On.EntityStates.Missions.LunarScavengerEncounter.FadeOut.OnEnter += FadeOut_OnEnter;
-      //On.RoR2.MoonBatteryMissionController.Awake
-      //On.RoR2.MoonBatteryMissionController.OnEnable
-      // On.RoR2.ClassicStageInfo.Start
 
       GivePickupsOnStart[] pickups = kipkipMaster.GetComponents<GivePickupsOnStart>();
       foreach (GivePickupsOnStart pickup in pickups)
@@ -62,44 +63,48 @@ namespace LunarApostles
       foreach (GivePickupsOnStart pickup in pickups)
         GameObject.Destroy(pickup);
 
+      // Body Changes
+      kipkipBody.GetComponent<CharacterBody>().baseMaxHealth = 1900;
+      kipkipBody.GetComponent<CharacterBody>().levelMaxHealth = 600;
+      wipwipBody.GetComponent<CharacterBody>().baseMaxHealth = 1900;
+      wipwipBody.GetComponent<CharacterBody>().levelMaxHealth = 600;
+      twiptwipBody.GetComponent<CharacterBody>().baseMaxHealth = 1900;
+      twiptwipBody.GetComponent<CharacterBody>().levelMaxHealth = 600;
+      guraguraBody.GetComponent<CharacterBody>().baseMaxHealth = 1900;
+      guraguraBody.GetComponent<CharacterBody>().levelMaxHealth = 600;
       //  Master Changes
       kipkipMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Secondary).First<AISkillDriver>().maxUserHealthFraction = 0.95f;
-      kipkipMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Utility).First<AISkillDriver>().maxUserHealthFraction = 0.90f;
+      kipkipMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Utility).First<AISkillDriver>().maxUserHealthFraction = 0.85f;
       wipwipMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Secondary).First<AISkillDriver>().maxUserHealthFraction = 0.95f;
-      wipwipMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Utility).First<AISkillDriver>().maxUserHealthFraction = 0.90f;
+      wipwipMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Utility).First<AISkillDriver>().maxUserHealthFraction = 0.85f;
       twiptwipMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Secondary).First<AISkillDriver>().maxUserHealthFraction = 0.95f;
-      twiptwipMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Utility).First<AISkillDriver>().maxUserHealthFraction = 0.90f;
+      twiptwipMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Utility).First<AISkillDriver>().maxUserHealthFraction = 0.85f;
       guraguraMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Secondary).First<AISkillDriver>().maxUserHealthFraction = 0.95f;
-      guraguraMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Utility).First<AISkillDriver>().maxUserHealthFraction = 0.90f;
+      guraguraMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Utility).First<AISkillDriver>().maxUserHealthFraction = 0.85f;
+    }
 
-      /*
-      wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepBlunderbuss));
-      wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(OrbBarrage));
-      wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterShockwaveSit));
-      wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepBlunderbuss));
-      wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(ArtilleryBarrage));
-      wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterMineSit));
-      wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepLuckyCannon));
-      wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(FullHouse));
-      wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterCrystalSit));
-      */
+    private void CharacterBody_Start(On.RoR2.CharacterBody.orig_Start orig, CharacterBody self)
+    {
+      orig(self);
+      if (SceneManager.GetActiveScene().name == "moon2" && completedPillar && self.isPlayerControlled)
+      {
+        // 308 -139 398 525.0092 -156.221 603.6622
+        SetPosition(new Vector3(308, -139, 398), self);
+        completedPillar = false;
+      }
     }
 
     private void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
     {
-      if (SceneManager.GetActiveScene().name == "moon2")
+      if (SceneManager.GetActiveScene().name != "limbo")
       {
-        activatedMass = false;
-        activatedDesign = false;
-        activatedBlood = false;
-        activatedSoul = false;
+        wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepEnergyCannon));
+        wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(ThrowSack));
+        wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterSit));
       }
       if (SceneManager.GetActiveScene().name == "limbo")
       {
         LunarApostles.timeCrystals = new();
-        CharacterBody body1 = wipwipBody.GetComponent<CharacterBody>();
-        body1.baseMaxHealth = 3800;
-        body1.levelMaxHealth = 1140;
         if (activatedMass)
         {
           wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepSeveredCannon));
@@ -127,6 +132,13 @@ namespace LunarApostles
       }
 
       orig(self);
+      if (SceneManager.GetActiveScene().name == "moon2")
+      {
+        activatedMass = false;
+        activatedDesign = false;
+        activatedBlood = false;
+        activatedSoul = false;
+      }
     }
 
     private void MoonElevatorBaseState_OnEnter(On.EntityStates.MoonElevator.MoonElevatorBaseState.orig_OnEnter orig, EntityStates.MoonElevator.MoonElevatorBaseState self)
@@ -135,23 +147,6 @@ namespace LunarApostles
       self.outer.SetNextState(new EntityStates.MoonElevator.Ready());
     }
 
-    private void CharacterBody_OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)
-    {
-      orig(self);
-      if (self && self.name == "TimeCrystalBody(Clone)" && SceneManager.GetActiveScene().name == "limbo")
-      {
-        int count = LunarApostles.timeCrystals.Count;
-        if (count != 1)
-          LunarApostles.timeCrystals.RemoveAt(0);
-        else
-        {
-          LunarApostles.timeCrystals.RemoveAt(0);
-          GameObject.Find("ScavLunar1Body(Clone)").GetComponent<CharacterBody>().RemoveBuff(RoR2Content.Buffs.Immune);
-        }
-      }
-    }
-
-
     private void FadeOut_OnEnter(On.EntityStates.Missions.LunarScavengerEncounter.FadeOut.orig_OnEnter orig, EntityStates.Missions.LunarScavengerEncounter.FadeOut self)
     {
       orig(self);
@@ -159,6 +154,7 @@ namespace LunarApostles
       activatedDesign = false;
       activatedBlood = false;
       activatedSoul = false;
+      completedPillar = true;
       SetScene("moon2");
     }
 
@@ -178,6 +174,13 @@ namespace LunarApostles
         SetScene("limbo");
       }
       // moon pillar MoonBatteryDesign MoonBatteryBlood MoonBatterySoul MoonBatteryMass (some number)
+    }
+
+    private void SetPosition(Vector3 newPosition, CharacterBody body)
+    {
+      if (!(bool)(Object)body.characterMotor)
+        return;
+      body.characterMotor.Motor.SetPositionAndRotation(newPosition, Quaternion.identity);
     }
 
     private void SetScene(string sceneName)
