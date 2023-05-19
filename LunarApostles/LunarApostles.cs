@@ -18,6 +18,7 @@ namespace LunarApostles
   public class LunarApostles : BaseUnityPlugin
   {
     public static List<GameObject> timeCrystals;
+    public static GameObject timeCrystal = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/WeeklyRun/TimeCrystalBody.prefab").WaitForCompletion();
     public static GameObject severPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/moon/MoonExitArenaOrbEffect.prefab").WaitForCompletion();
     public static GameObject wispBomb = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/LunarWisp/LunarWispTrackingBomb.prefab").WaitForCompletion();
     public static GameObject bloodSiphon = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/moon2/BloodSiphonNearbyAttachment.prefab").WaitForCompletion();
@@ -66,15 +67,14 @@ namespace LunarApostles
       wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepBlunderbuss));
       wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(ArtilleryBarrage));
       wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterMineSit));
+      wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepLuckyCannon));
+      wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(FullHouse));
+      wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterCrystalSit));
       */
-      // kms
+
       CharacterBody body1 = wipwipBody.GetComponent<CharacterBody>();
       body1.baseMaxHealth = 3800;
       body1.levelMaxHealth = 1140;
-
-      wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepStarCannon));
-      wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(StarFall));
-      wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterDrainSit));
     }
 
     private void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
@@ -105,6 +105,23 @@ namespace LunarApostles
       ContentAddition.AddEntityState<FireBlunderbuss>(out _);
       ContentAddition.AddEntityState<ArtilleryBarrage>(out _);
       // Twiptwip
+      ContentAddition.AddEntityState<BaseDrainSitState>(out _);
+      ContentAddition.AddEntityState<EnterDrainSit>(out _);
+      ContentAddition.AddEntityState<ExitDrainSit>(out _);
+      ContentAddition.AddEntityState<DrainSit>(out _);
+      ContentAddition.AddEntityState<StarCannonState>(out _);
+      ContentAddition.AddEntityState<PrepStarCannon>(out _);
+      ContentAddition.AddEntityState<FireStarCannon>(out _);
+      ContentAddition.AddEntityState<StarFall>(out _);
+      // Guragura
+      ContentAddition.AddEntityState<BaseCrystalSitState>(out _);
+      ContentAddition.AddEntityState<EnterCrystalSit>(out _);
+      ContentAddition.AddEntityState<ExitCrystalSit>(out _);
+      ContentAddition.AddEntityState<CrystalSit>(out _);
+      ContentAddition.AddEntityState<LuckyCannonState>(out _);
+      ContentAddition.AddEntityState<PrepLuckyCannon>(out _);
+      ContentAddition.AddEntityState<FireLuckyCannon>(out _);
+      ContentAddition.AddEntityState<FullHouse>(out _);
     }
 
   }

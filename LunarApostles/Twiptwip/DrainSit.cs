@@ -36,9 +36,9 @@ namespace LunarApostles
         ProjectileManager.instance.FireProjectile(FistSlam.waveProjectilePrefab, footPosition, Util.QuaternionSafeLookRotation(forward), body.gameObject, body.damage * FistSlam.waveProjectileDamageCoefficient, FistSlam.waveProjectileForce, Util.CheckRoll(body.crit, body.master));
       }
 
-      for (int i = 0; i < 12; i++)
+      for (int i = 0; i < 16; i++)
       {
-        float angle = i * Mathf.PI * 2 / 12;
+        float angle = i * Mathf.PI * 2 / 16;
         float x = Mathf.Cos(angle) * 5;
         float z = Mathf.Sin(angle) * 5;
         Vector3 pos = transform.position + new Vector3(x, 0, z);

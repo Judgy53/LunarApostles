@@ -18,19 +18,19 @@ TODOS:
 
 - Primary Blunderbuss - fires an inaccurate cluster of projectiles (higher than normal)
 - Secondary Artillery Barrage - summons a round of meteorite artillery 
-- Utility Scatter - Shockwave and Orb burst with mines ("mines" expire)
+- Utility Scatter - Shockwave and Orb burst with mines
 
 ## Twiptwip (Blood Pillar)
 
-- Primary Cleave Cannon - fires several projectiles in a ) formation
+- Primary Cleave Cannon - fires several projectiles in a 60 degree ) formation
 - Secondary Starfall - drops an orb star formation on the player
-- Utility Drain - Shockwave and Orb burst with slower orbs
+- Utility Burst - Shockwave and Orb burst with slower orbs
 
 ## Guragura (Soul Pillar) (ScavLunar4Body)
 
-- Primary 
-- Secondary 
-- Utility Enclose - Shockwave and Orb burst while enclosing players to closer quarters (resets every ability use)
+- Primary Lucky Cannon - Has a 25% to refire
+- Secondary Full House - Summons a double orb (tracking/regular) barrage
+- Utility Jackpot - Shockwave and Orb burst and becomes immune until crystals are broken
 
 ## Changelog
 
