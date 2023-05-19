@@ -26,7 +26,7 @@ TODOS:
 - Secondary Starfall - drops an orb star formation on the player
 - Utility Burst - Shockwave and Orb burst with slower orbs
 
-## Guragura (Soul Pillar) (ScavLunar4Body)
+## Guragura (Soul Pillar)
 
 - Primary Lucky Cannon - Has a 25% to refire
 - Secondary Full House - Summons a double orb (tracking/regular) barrage

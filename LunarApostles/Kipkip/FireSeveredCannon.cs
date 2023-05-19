@@ -35,7 +35,7 @@ namespace LunarApostles
     {
       base.OnEnter();
       speedOverride = 75;
-      refireDurationBase = 0.5f;
+      refireDurationBase = 0.35f;
       Transform modelTransform = this.GetModelTransform();
       if (!(bool)(Object)modelTransform)
         return;

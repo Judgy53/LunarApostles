@@ -1,6 +1,6 @@
 using BepInEx;
 using RoR2;
-using RoR2.Projectile;
+using RoR2.Networking;
 using RoR2.CharacterAI;
 using R2API;
 using EntityStates;
@@ -18,6 +18,10 @@ namespace LunarApostles
   public class LunarApostles : BaseUnityPlugin
   {
     public static List<GameObject> timeCrystals;
+    public static bool activatedMass;
+    public static bool activatedDesign;
+    public static bool activatedBlood;
+    public static bool activatedSoul;
     public static GameObject timeCrystal = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/WeeklyRun/TimeCrystalBody.prefab").WaitForCompletion();
     public static GameObject severPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/moon/MoonExitArenaOrbEffect.prefab").WaitForCompletion();
     public static GameObject wispBomb = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/LunarWisp/LunarWispTrackingBomb.prefab").WaitForCompletion();
@@ -37,6 +41,13 @@ namespace LunarApostles
       SetupSkillStates();
       // Hooks
       On.RoR2.SceneDirector.Start += SceneDirector_Start;
+      On.RoR2.CharacterBody.OnDeathStart += CharacterBody_OnDeathStart;
+      On.RoR2.HoldoutZoneController.Start += HoldoutZoneController_Start;
+      On.EntityStates.MoonElevator.MoonElevatorBaseState.OnEnter += MoonElevatorBaseState_OnEnter;
+      On.EntityStates.Missions.LunarScavengerEncounter.FadeOut.OnEnter += FadeOut_OnEnter;
+      //On.RoR2.MoonBatteryMissionController.Awake
+      //On.RoR2.MoonBatteryMissionController.OnEnable
+      // On.RoR2.ClassicStageInfo.Start
 
       GivePickupsOnStart[] pickups = kipkipMaster.GetComponents<GivePickupsOnStart>();
       foreach (GivePickupsOnStart pickup in pickups)
@@ -60,6 +71,7 @@ namespace LunarApostles
       twiptwipMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Utility).First<AISkillDriver>().maxUserHealthFraction = 0.90f;
       guraguraMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Secondary).First<AISkillDriver>().maxUserHealthFraction = 0.95f;
       guraguraMaster.GetComponents<AISkillDriver>().Where<AISkillDriver>(x => x.skillSlot == SkillSlot.Utility).First<AISkillDriver>().maxUserHealthFraction = 0.90f;
+
       /*
       wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepBlunderbuss));
       wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(OrbBarrage));
@@ -71,17 +83,131 @@ namespace LunarApostles
       wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(FullHouse));
       wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterCrystalSit));
       */
-
-      CharacterBody body1 = wipwipBody.GetComponent<CharacterBody>();
-      body1.baseMaxHealth = 3800;
-      body1.levelMaxHealth = 1140;
     }
 
     private void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
     {
+      if (SceneManager.GetActiveScene().name == "moon2")
+      {
+        activatedMass = false;
+        activatedDesign = false;
+        activatedBlood = false;
+        activatedSoul = false;
+      }
       if (SceneManager.GetActiveScene().name == "limbo")
+      {
         LunarApostles.timeCrystals = new();
+        CharacterBody body1 = wipwipBody.GetComponent<CharacterBody>();
+        body1.baseMaxHealth = 3800;
+        body1.levelMaxHealth = 1140;
+        if (activatedMass)
+        {
+          wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepSeveredCannon));
+          wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(OrbBarrage));
+          wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterShockwaveSit));
+        }
+        if (activatedDesign)
+        {
+          wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepBlunderbuss));
+          wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(ArtilleryBarrage));
+          wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterMineSit));
+        }
+        if (activatedBlood)
+        {
+          wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepStarCannon));
+          wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(StarFall));
+          wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterDrainSit));
+        }
+        if (activatedSoul)
+        {
+          wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepLuckyCannon));
+          wipwipBody.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(FullHouse));
+          wipwipBody.GetComponent<SkillLocator>().utility.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EnterCrystalSit));
+        }
+      }
+
       orig(self);
+    }
+
+    private void MoonElevatorBaseState_OnEnter(On.EntityStates.MoonElevator.MoonElevatorBaseState.orig_OnEnter orig, EntityStates.MoonElevator.MoonElevatorBaseState self)
+    {
+      orig(self);
+      self.outer.SetNextState(new EntityStates.MoonElevator.Ready());
+    }
+
+    private void CharacterBody_OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)
+    {
+      orig(self);
+      if (self && self.name == "TimeCrystalBody(Clone)" && SceneManager.GetActiveScene().name == "limbo")
+      {
+        int count = LunarApostles.timeCrystals.Count;
+        if (count != 1)
+          LunarApostles.timeCrystals.RemoveAt(0);
+        else
+        {
+          LunarApostles.timeCrystals.RemoveAt(0);
+          GameObject.Find("ScavLunar1Body(Clone)").GetComponent<CharacterBody>().RemoveBuff(RoR2Content.Buffs.Immune);
+        }
+      }
+    }
+
+
+    private void FadeOut_OnEnter(On.EntityStates.Missions.LunarScavengerEncounter.FadeOut.orig_OnEnter orig, EntityStates.Missions.LunarScavengerEncounter.FadeOut self)
+    {
+      orig(self);
+      activatedMass = false;
+      activatedDesign = false;
+      activatedBlood = false;
+      activatedSoul = false;
+      SetScene("moon2");
+    }
+
+    private void HoldoutZoneController_Start(On.RoR2.HoldoutZoneController.orig_Start orig, RoR2.HoldoutZoneController self)
+    {
+      orig(self);
+      if (self.name.Contains("MoonBattery"))
+      {
+        if (self.name.Contains("Mass"))
+          activatedMass = true;
+        if (self.name.Contains("Design"))
+          activatedDesign = true;
+        if (self.name.Contains("Blood"))
+          activatedBlood = true;
+        if (self.name.Contains("Soul"))
+          activatedSoul = true;
+        SetScene("limbo");
+      }
+      // moon pillar MoonBatteryDesign MoonBatteryBlood MoonBatterySoul MoonBatteryMass (some number)
+    }
+
+    private void SetScene(string sceneName)
+    {
+      if (!(bool)(UnityEngine.Object)NetworkManagerSystem.singleton)
+        throw new ConCommandException("set_scene failed: NetworkManagerSystem is not available.");
+      SceneCatalog.GetSceneDefForCurrentScene();
+      SceneDef defFromSceneName = SceneCatalog.GetSceneDefFromSceneName(sceneName);
+      if (!(bool)(UnityEngine.Object)defFromSceneName)
+        throw new ConCommandException("\"" + sceneName + "\" is not a valid scene.");
+      int num = !(bool)(UnityEngine.Object)NetworkManager.singleton ? 1 : (NetworkManager.singleton.isNetworkActive ? 1 : 0);
+      if (NetworkManager.singleton.isNetworkActive)
+      {
+        if (defFromSceneName.isOfflineScene)
+          throw new ConCommandException("Cannot switch to scene \"" + sceneName + "\": Cannot switch to offline-only scene while in a network session.");
+      }
+      else if (!defFromSceneName.isOfflineScene)
+        throw new ConCommandException("Cannot switch to scene \"" + sceneName + "\": Cannot switch to online-only scene while not in a network session.");
+      if (NetworkServer.active)
+      {
+        Debug.LogFormat("Setting server scene to {0}", (object)sceneName);
+        NetworkManagerSystem.singleton.ServerChangeScene(sceneName);
+      }
+      else
+      {
+        if (NetworkClient.active)
+          throw new ConCommandException("Cannot change scene while connected to a remote server.");
+        Debug.LogFormat("Setting offline scene to {0}", (object)sceneName);
+        NetworkManagerSystem.singleton.ServerChangeScene(sceneName);
+      }
     }
 
     private void SetupSkillStates()

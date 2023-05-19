@@ -34,7 +34,7 @@ namespace LunarApostles
     {
       base.OnEnter();
       speedOverride = 75;
-      refireDurationBase = 0.5f;
+      refireDurationBase = 0.35f;
       this.duration = FireEnergyCannon.baseDuration / this.attackSpeedStat;
       this.refireDuration = refireDurationBase / this.attackSpeedStat;
       int num1 = (int)Util.PlayAttackSpeedSound(FireEnergyCannon.sound, this.gameObject, this.attackSpeedStat);

@@ -19,7 +19,7 @@ namespace LunarApostles
     private void SpawnCrystals(CharacterBody body)
     {
       body.AddBuff(RoR2Content.Buffs.Immune);
-      int crystalCount = 5;
+      int crystalCount = 3;
 
       for (int i = 0; i < crystalCount; i++)
       {
