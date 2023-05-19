@@ -1,10 +1,12 @@
 # Lunar Apostles
 
-Makes pillars optional and each pillar takes you to fight a different apostle (lunar scav). Adds new abilities to each of the 4 twisted scavengers to make each unique. The names don't matter since abilities are changed after activating the pillar. Could use more tweaks/polish. No idea if it works in multiplayer.
+Makes pillars optional and each pillar takes you to fight a different apostle (lunar scav). Adds new abilities to each of the 4 twisted scavengers to make each unique. HP has been halved. The names don't matter since abilities are changed after activating the pillar. Prevents drones from going to the scav arena. Teleports you back to the rescue ship after completing a boss. Could use more tweaks/polish. No idea if it works in multiplayer. Probably bugged somewhere (regular scavs might be borked) but im sleepy.
 
 TODOS:
+
+- Make pillars consistent
 - Tweak apostles as needed
-- Add a reward for fighting the minibosses
+- Add a reward for fighting the apostles
 - Add curse damage persistence
 
 ## Apostle of Mass
@@ -16,7 +18,7 @@ TODOS:
 ## Apostle of Design
 
 - Primary Blunderbuss - fires an inaccurate cluster of projectiles (higher than normal)
-- Secondary Artillery Barrage - summons a round of meteorite artillery 
+- Secondary Artillery Barrage - summons a round of meteorite artillery
 - Utility Scatter - Shockwave and Orb burst with mines
 
 ## Apostle of Blood

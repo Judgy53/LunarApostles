@@ -31,7 +31,7 @@ namespace LunarApostles
     public static GameObject bloodSiphon = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/moon2/BloodSiphonNearbyAttachment.prefab").WaitForCompletion();
     public static MeteorStormController meteorStormController = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Meteor/MeteorStorm.prefab").WaitForCompletion().GetComponent<MeteorStormController>();
 
-    private static SceneDef limbo = Addressables.LoadAssetAsync<SceneDef>("RoR2/Base/limbo/limbo.asset ").WaitForCompletion();
+    private SceneDef limbo = Addressables.LoadAssetAsync<SceneDef>("RoR2/Base/limbo/limbo.asset").WaitForCompletion();
     private static GameObject kipkipBody = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar1Body.prefab").WaitForCompletion();
     private static GameObject wipwipBody = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar2Body.prefab").WaitForCompletion();
     private static GameObject twiptwipBody = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar3Body.prefab").WaitForCompletion();
