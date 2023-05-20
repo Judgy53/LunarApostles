@@ -41,6 +41,8 @@ namespace LunarApostles
     private static GameObject twiptwipMaster = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar3Master.prefab").WaitForCompletion();
     private static GameObject guraguraMaster = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ScavLunar/ScavLunar4Master.prefab").WaitForCompletion();
 
+    private static Dictionary<CharacterMaster, Dictionary<BuffIndex, int>> persistentBuffs = new Dictionary<CharacterMaster, Dictionary<BuffIndex, int>>();
+
     public void Awake()
     {
       limbo.suppressNpcEntry = true;
@@ -89,12 +91,17 @@ namespace LunarApostles
     private void CharacterBody_Start(On.RoR2.CharacterBody.orig_Start orig, CharacterBody self)
     {
       orig(self);
-      if (SceneManager.GetActiveScene().name == "moon2" && completedPillar && self.isPlayerControlled)
+      string sceneName = SceneManager.GetActiveScene().name;
+      if (sceneName == "moon2" && completedPillar && self.isPlayerControlled)
       {
         // 308 -139 398 525.0092 -156.221 603.6622
         SetPosition(new Vector3(308, -139, 398), self);
         completedPillar = false;
       }
+
+      bool anyPillarActivated = activatedMass || activatedDesign || activatedBlood || activatedSoul;
+      if (anyPillarActivated && (sceneName == "moon2" || sceneName == "limbo"))
+        LoadPersistentBuffs(self);
     }
 
     private void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
@@ -107,7 +114,7 @@ namespace LunarApostles
       }
       if (SceneManager.GetActiveScene().name == "limbo")
       {
-        LunarApostles.timeCrystals = new();
+        LunarApostles.timeCrystals = new List<GameObject>();
         if (activatedMass)
         {
           wipwipBody.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(PrepSeveredCannon));
@@ -158,6 +165,7 @@ namespace LunarApostles
       activatedBlood = false;
       activatedSoul = false;
       completedPillar = true;
+      SavePersistentBuffs();
       SetScene("moon2");
     }
 
@@ -174,9 +182,53 @@ namespace LunarApostles
           activatedBlood = true;
         if (self.name.Contains("Soul"))
           activatedSoul = true;
+
+        SavePersistentBuffs();
         SetScene("limbo");
       }
       // moon pillar MoonBatteryDesign MoonBatteryBlood MoonBatterySoul MoonBatteryMass (some number)
+    }
+
+    private void SavePersistentBuffs()
+    {
+      if (!NetworkServer.active)
+        return;
+      foreach(PlayerCharacterMasterController player in PlayerCharacterMasterController.instances)
+      {
+        CharacterBody body = player.master?.GetBody();
+        if (body == null)
+          continue;
+        Dictionary<BuffIndex, int> buffs = new Dictionary<BuffIndex, int>();
+
+        int curseCount = body.GetBuffCount(RoR2Content.Buffs.PermanentCurse.buffIndex);
+        if (curseCount > 0)
+          buffs.Add(RoR2Content.Buffs.PermanentCurse.buffIndex, curseCount);
+
+        int banditSkullCount = body.GetBuffCount(RoR2Content.Buffs.BanditSkull.buffIndex);
+        if (banditSkullCount > 0)
+          buffs.Add(RoR2Content.Buffs.BanditSkull.buffIndex, banditSkullCount);
+
+        if(buffs.Count > 0)
+        {
+          persistentBuffs[player.master] = buffs;
+          Logger.LogInfo($"Saved buffs for player `{player.GetDisplayName()}` : Curse={curseCount}, BanditSkulls={banditSkullCount}");
+        }
+      }
+    }
+
+    private void LoadPersistentBuffs(CharacterBody body)
+    {
+      if (!NetworkServer.active || body.master == null)
+        return;
+
+      if(persistentBuffs.TryGetValue(body.master, out Dictionary<BuffIndex, int> buffs))
+      {
+        foreach(var buff in buffs)
+          body.SetBuffCount(buff.Key, buff.Value);
+
+        Logger.LogInfo($"Loaded buffs for player `{body.GetDisplayName()}`");
+        persistentBuffs.Remove(body.master);
+      }
     }
 
     private void SetPosition(Vector3 newPosition, CharacterBody body)
