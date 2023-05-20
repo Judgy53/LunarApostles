@@ -51,7 +51,7 @@ namespace LunarApostles
         this.missileStopwatch -= 1f / missileSpawnFrequency;
         for (int index = 0; index < JellyStorm.missileTurretCount; ++index)
         {
-          float bonusYaw = (float)(360.0 / (double)JellyStorm.missileTurretCount * (double)index + 360.0 * (double)JellyStorm.missileTurretYawFrequency * (double)this.stopwatch);
+          float bonusYaw = (float)(360.0 / (double)JellyStorm.missileTurretCount * (double)index + 360.0 * (double)0.75 * (double)this.stopwatch);
           this.FireBlob(new Ray()
           {
             origin = aimRay.origin + new Vector3(0, 5, 0),

@@ -2,7 +2,9 @@ using RoR2;
 using RoR2.Projectile;
 using RoR2.Navigation;
 using EntityStates;
+using EntityStates.VagrantMonster.Weapon;
 using EntityStates.ScavMonster;
+using EntityStates.LunarWisp;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,12 +20,14 @@ namespace LunarApostles
     public static string attackSoundString;
     public static float timeToTarget = 3f;
     public static int projectileCount;
+    private float missileStopwatch;
     private float duration;
     private ChildLocator childLocator;
 
     public override void OnEnter()
     {
       base.OnEnter();
+      missileStopwatch = 0f;
       this.duration = (ThrowSack.baseDuration * 2) / this.attackSpeedStat;
       int num = (int)Util.PlayAttackSpeedSound(ThrowSack.sound, this.gameObject, this.attackSpeedStat);
       this.PlayAnimation("Body", nameof(ThrowSack), "ThrowSack.playbackRate", this.duration);
@@ -39,6 +43,32 @@ namespace LunarApostles
     {
       base.FixedUpdate();
       RainFire(0.2f, 8f, 20f);
+      missileStopwatch += Time.deltaTime;
+      if (this.missileStopwatch >= 1f / (JellyBarrage.missileSpawnFrequency))
+      {
+        this.missileStopwatch -= 1f / (JellyBarrage.missileSpawnFrequency);
+        Transform child = this.childLocator.FindChild(EnergyCannonState.muzzleName);
+        if ((bool)(UnityEngine.Object)child)
+        {
+          Ray aimRay = this.GetAimRay();
+          Ray projectileRay = new Ray();
+          projectileRay.direction = aimRay.direction;
+          float maxDistance = 1000f;
+          float randX = UnityEngine.Random.Range(-25f, 25f);
+          float randY = UnityEngine.Random.Range(10f, 25f);
+          float randZ = UnityEngine.Random.Range(-25f, 25f);
+          Vector3 randVector = new Vector3(randX, randY, randZ);
+          Vector3 position = child.position + randVector;
+          projectileRay.origin = position;
+          RaycastHit hitInfo;
+          if (Physics.Raycast(aimRay, out hitInfo, maxDistance, (int)LayerIndex.CommonMasks.bullet))
+          {
+            projectileRay.direction = hitInfo.point - projectileRay.origin;
+            EffectManager.SpawnEffect(LunarApostles.severPrefab, new EffectData { origin = projectileRay.origin, rotation = Util.QuaternionSafeLookRotation(projectileRay.direction) }, false);
+            ProjectileManager.instance.FireProjectile(JellyBarrage.projectilePrefab, projectileRay.origin, Util.QuaternionSafeLookRotation(projectileRay.direction), this.gameObject, this.damageStat * SeekingBomb.bombDamageCoefficient, SeekingBomb.bombForce, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: 125);
+          }
+        }
+      }
       if ((double)this.fixedAge < (double)this.duration || !this.isAuthority)
         return;
       this.outer.SetNextStateToMain();
