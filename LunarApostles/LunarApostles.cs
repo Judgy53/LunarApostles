@@ -101,10 +101,10 @@ namespace LunarApostles
         // 308 -139 398 525.0092 -156.221 603.6622
         SetPosition(new Vector3(308, -139, 398), self);
         completedPillar = false;
+        LoadPersistentBuffs(self);
       }
 
-      bool anyPillarActivated = activatedMass || activatedDesign || activatedBlood || activatedSoul;
-      if (anyPillarActivated && (sceneName == "moon2" || sceneName == "limbo"))
+      if (sceneName == "limbo" && (activatedMass || activatedDesign || activatedBlood || activatedSoul))
         LoadPersistentBuffs(self);
     }
 
