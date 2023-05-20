@@ -17,12 +17,16 @@ namespace LunarApostles
     public static float timeToTarget = 3f;
     public static int projectileCount;
     private float duration;
+    private float orbStopwatch;
+    private float missileStopwatch;
     private ChildLocator childLocator;
 
     public override void OnEnter()
     {
       base.OnEnter();
-      this.duration = ThrowSack.baseDuration / this.attackSpeedStat;
+      this.missileStopwatch = 0f;
+      this.orbStopwatch = 0f;
+      this.duration = 6 / this.attackSpeedStat;
       int num = (int)Util.PlayAttackSpeedSound(ThrowSack.sound, this.gameObject, this.attackSpeedStat);
       this.PlayAnimation("Body", nameof(ThrowSack), "ThrowSack.playbackRate", this.duration);
       Transform modelTransform = this.GetModelTransform();
@@ -39,7 +43,34 @@ namespace LunarApostles
       Transform child = this.childLocator.FindChild(EnergyCannonState.muzzleName);
       if ((bool)(Object)child)
       {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 16; i++)
+        {
+          float angle = i * Mathf.PI * 2 / 16;
+          float x = Mathf.Cos(angle) * 5;
+          float z = Mathf.Sin(angle) * 5;
+          Vector3 pos = transform.position + new Vector3(x, 0, z);
+          float angleDegrees = -angle * Mathf.Rad2Deg;
+          Quaternion rot = Quaternion.Euler(0, angleDegrees, 0);
+          ProjectileManager.instance.FireProjectile(JellyBarrage.projectilePrefab, pos, rot, this.gameObject, this.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: 45);
+        }
+      }
+    }
+
+    public override void FixedUpdate()
+    {
+      base.FixedUpdate();
+      this.missileStopwatch += Time.fixedDeltaTime;
+      this.orbStopwatch += Time.fixedDeltaTime;
+      if (this.orbStopwatch >= 2)
+      {
+        this.orbStopwatch -= 2;
+        SpawnOrbs();
+      }
+      if (this.missileStopwatch >= 1f / (JellyBarrage.missileSpawnFrequency * 2))
+      {
+        this.missileStopwatch -= 1f / (JellyBarrage.missileSpawnFrequency * 2);
+        Transform child = this.childLocator.FindChild(EnergyCannonState.muzzleName);
+        if ((bool)(Object)child)
         {
           Ray aimRay = this.GetAimRay();
           Ray projectileRay = new Ray();
@@ -52,48 +83,17 @@ namespace LunarApostles
           Vector3 position = child.position + randVector;
           projectileRay.origin = position;
           RaycastHit hitInfo;
+          if (Physics.Raycast(aimRay, out hitInfo, maxDistance, (int)LayerIndex.CommonMasks.bullet))
           {
-            if (Physics.Raycast(aimRay, out hitInfo, maxDistance, (int)LayerIndex.world.mask))
-            {
-              projectileRay.direction = hitInfo.point - projectileRay.origin;
-              EffectManager.SpawnEffect(LunarApostles.severPrefab, new EffectData { origin = projectileRay.origin, rotation = Util.QuaternionSafeLookRotation(projectileRay.direction) }, false);
-              ProjectileManager.instance.FireProjectile(LunarApostles.wispBomb, projectileRay.origin, Util.QuaternionSafeLookRotation(projectileRay.direction), this.gameObject, this.damageStat * SeekingBomb.bombDamageCoefficient, SeekingBomb.bombForce, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: 0);
-            }
+            projectileRay.direction = hitInfo.point - projectileRay.origin;
           }
+          EffectManager.SpawnEffect(LunarApostles.severPrefab, new EffectData { origin = projectileRay.origin, rotation = Util.QuaternionSafeLookRotation(projectileRay.direction) }, false);
+          ProjectileManager.instance.FireProjectile(JellyBarrage.projectilePrefab, projectileRay.origin, Util.QuaternionSafeLookRotation(projectileRay.direction), this.gameObject, this.damageStat * SeekingBomb.bombDamageCoefficient, SeekingBomb.bombForce, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: 125);
         }
       }
-      for (int i = 0; i < 12; i++)
-      {
-        float angle = i * Mathf.PI * 2 / 12;
-        float x = Mathf.Cos(angle) * 5;
-        float z = Mathf.Sin(angle) * 5;
-        Vector3 pos = transform.position + new Vector3(x, 0, z);
-        float angleDegrees = -angle * Mathf.Rad2Deg;
-        Quaternion rot = Quaternion.Euler(0, angleDegrees, 0);
-        ProjectileManager.instance.FireProjectile(JellyBarrage.projectilePrefab, pos, rot, this.gameObject, this.damageStat * FireEnergyCannon.damageCoefficient, FireEnergyCannon.force, Util.CheckRoll(this.critStat, this.characterBody.master), speedOverride: 45);
-      }
-    }
-
-    public override void FixedUpdate()
-    {
-      base.FixedUpdate();
       if ((double)this.fixedAge < (double)this.duration || !this.isAuthority)
         return;
       this.outer.SetNextStateToMain();
-    }
-
-    public override void OnExit()
-    {
-      base.OnExit();
-      ProjectileSimple[] projectiles = GameObject.FindObjectsOfType<ProjectileSimple>();
-      if (projectiles.Length > 0)
-      {
-        foreach (ProjectileSimple projectile in projectiles)
-          if (projectile.name == "LunarWispTrackingBomb(Clone)")
-          {
-            projectile.desiredForwardSpeed = 25;
-          }
-      }
     }
   }
 }

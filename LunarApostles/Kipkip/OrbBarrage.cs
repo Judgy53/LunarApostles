@@ -38,7 +38,7 @@ namespace LunarApostles
       Transform child = this.childLocator.FindChild(EnergyCannonState.muzzleName);
       if ((bool)(Object)child)
       {
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 12; i++)
         {
           Ray aimRay = this.GetAimRay();
           Ray projectileRay = new Ray();
@@ -52,7 +52,7 @@ namespace LunarApostles
           projectileRay.origin = position;
           RaycastHit hitInfo;
           {
-            if (Physics.Raycast(aimRay, out hitInfo, maxDistance, (int)LayerIndex.world.mask))
+            if (Physics.Raycast(aimRay, out hitInfo, maxDistance, (int)LayerIndex.CommonMasks.bullet))
             {
               projectileRay.direction = hitInfo.point - projectileRay.origin;
               EffectManager.SpawnEffect(LunarApostles.severPrefab, new EffectData { origin = projectileRay.origin, rotation = Util.QuaternionSafeLookRotation(projectileRay.direction) }, false);
@@ -80,7 +80,7 @@ namespace LunarApostles
         foreach (ProjectileSimple projectile in projectiles)
           if (projectile.name == "LunarWispTrackingBomb(Clone)")
           {
-            projectile.desiredForwardSpeed = 25;
+            projectile.desiredForwardSpeed = 45;
           }
       }
     }

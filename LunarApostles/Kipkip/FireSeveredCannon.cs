@@ -66,7 +66,7 @@ namespace LunarApostles
         projectileRay.origin = position;
         RaycastHit hitInfo;
         {
-          if (Physics.Raycast(aimRay, out hitInfo, maxDistance, (int)LayerIndex.world.mask))
+          if (Physics.Raycast(aimRay, out hitInfo, maxDistance, (int)LayerIndex.CommonMasks.bullet))
           {
             projectileRay.direction = hitInfo.point - projectileRay.origin;
             FireCannon(projectileRay, 0.0f, 0.0f);

@@ -12,7 +12,7 @@ namespace LunarApostles
     public override void OnEnter()
     {
       base.OnEnter();
-      this.duration = ExitSit.baseDuration / this.attackSpeedStat;
+      this.duration = (ExitSit.baseDuration / 2) / this.attackSpeedStat;
       int num = (int)Util.PlaySound(ExitSit.soundString, this.gameObject);
       this.PlayCrossfade("Body", nameof(ExitSit), "Sit.playbackRate", this.duration, 0.1f);
       this.modelLocator.normalizeToFloor = false;
