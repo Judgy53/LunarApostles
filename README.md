@@ -29,11 +29,11 @@ TODOS:
 
 ## Apostle of Soul
 
-- Primary Lucky Cannon - Has a 25% to refire
-- Secondary Full House - Summons a double orb (tracking/regular) barrage
-- Utility Jackpot - Shockwave and Orb burst and becomes buffed (+30% movespd +30% atkspd)
-
 ## Changelog
+
+**0.9.1**
+
+- Increased primary range
 
 **0.9.0**
 

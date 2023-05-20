@@ -16,7 +16,7 @@ namespace LunarApostles
     public override void OnEnter()
     {
       base.OnEnter();
-      this.duration = PrepEnergyCannon.baseDuration / this.attackSpeedStat;
+      this.duration = (PrepEnergyCannon.baseDuration / 2) / this.attackSpeedStat;
       this.PlayCrossfade("Body", nameof(PrepEnergyCannon), "PrepEnergyCannon.playbackRate", this.duration, 0.1f);
       int num = (int)Util.PlaySound(PrepEnergyCannon.sound, this.gameObject);
       if (!(bool)(Object)this.muzzleTransform || !(bool)(Object)PrepEnergyCannon.chargeEffectPrefab)
@@ -32,7 +32,7 @@ namespace LunarApostles
     public override void FixedUpdate()
     {
       base.FixedUpdate();
-      this.StartAimMode(0.5f);
+      this.StartAimMode(0.25f);
       if ((double)this.fixedAge < (double)this.duration || !this.isAuthority)
         return;
       this.outer.SetNextState((EntityState)new FireLuckyCannon());
