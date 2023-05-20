@@ -16,7 +16,7 @@ namespace LunarApostles
     public override void OnEnter()
     {
       base.OnEnter();
-      this.duration = PrepEnergyCannon.baseDuration / this.attackSpeedStat;
+      this.duration = (PrepEnergyCannon.baseDuration / 2) / this.attackSpeedStat;
       this.PlayCrossfade("Body", nameof(PrepEnergyCannon), "PrepEnergyCannon.playbackRate", this.duration, 0.1f);
       int num = (int)Util.PlaySound(PrepEnergyCannon.sound, this.gameObject);
       if (!(bool)(Object)this.muzzleTransform || !(bool)(Object)PrepEnergyCannon.chargeEffectPrefab)
